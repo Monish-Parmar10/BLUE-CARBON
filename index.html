@@ -1,590 +1,98 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Smart CO₂ Tracker</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-   
-     h3 {
-  color: #ffffff; /* Dark green */
-  font-weight: bold; 
-}
-   
-    h2 {
-  color: #ffffff; /* Dark green */
-  font-weight: bold;
-}
-
-p {
-  color: #ff2038; /* Soft gray */
-  font-size: 1rem;
-}
-    body  {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(-45deg, #040110, #0b0218, #030446, #66ff6e);
-  background-size: 400% 400%;
-  animation: gradientBG 15s ease infinite;
-}
-
-@keyframes gradientBG {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-    body { background-color: #f8f9fa; }
-    .sidebar { height: 100vh; background-color: #000000; border-right: 1px solid #0e0101c4; }
-    .nav-link.active { font-weight: bold; color: #07bd07 !important; }
-    .section { display: none; }
-    .section.active { display: block; }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(-45deg, #040110, #0b0218, #030446, #66ff6e);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .login-container {
+      width: 400px;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.9);
+    }
   </style>
 </head>
 <body>
-  <div class="d-flex">
-    <nav class="sidebar p-3">
-      <h4 class="text-primary">🌍 Carbon Scope</h4>
-      <ul class="nav flex-column mt-4">
-        <li class="nav-item"><a href="#overview" class="nav-link">📊 Overview</a></li>
-        <li class="nav-item"><a href="#compare" class="nav-link">⚖️ Compare</a></li>
-        <li class="nav-item"><a href="#list" class="nav-link">📋 Machine List</a></li>
-      </ul>
-    </nav>
-
-    <main class="flex-grow-1 p-4">
-      <div class="text-end mb-3">
-  <button onclick="logout()" class="btn btn-outline-light">Logout</button>
-</div>
-      <!-- Toast Container -->
-<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
-      <!-- Overview Section -->
-      <section id="overview" class="section active">
-        <div class="card mt-4 shadow-sm">
-  <div class="card-body">
-    <h5 class="card-title">📊 CO₂ Emission Distribution</h5>
-    <canvas id="co2Chart" height="100"></canvas>
-  </div>
-</div>  
-        <div class="row g-4">
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">🌍 Total Machines</h5>
-        <p class="card-text fs-4" id="totalMachines">–</p>
+  <div class="login-container">
+    <h2 class="text-center mb-4">Login</h2>
+    <form id="loginForm">
+      <div class="mb-3">
+        <label for="usernameInput" class="form-label">Username</label>
+        <input type="text" id="usernameInput" name="username" class="form-control" placeholder="Enter username" required>
       </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">📉 Avg CO₂ Emission</h5>
-        <p class="card-text fs-4" id="averageCO2">–</p>
+      <div class="mb-3">
+        <label for="passwordInput" class="form-label">Password</label>
+        <input type="password" id="passwordInput" name="password" class="form-control" placeholder="Enter password" required>
       </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">🏆 Best Performer</h5>
-        <p class="card-text fs-5" id="bestMachine">–</p>
+      <div class="mb-3">
+        <label for="roleSelect" class="form-label">Role</label>
+        <select id="roleSelect" name="role" class="form-select">
+          <option value="customer">Customer</option>
+          <option value="Admin">Admin</option>
+        </select>
       </div>
-    </div>
-  </div>
-</div>
-
-        <h2>Machine Overview</h2>
-        <p>Track, evaluate, and improve the carbon efficiency of your industrial machinery.</p>
-       <p class="text-muted small">Last updated: <span id="lastUpdated"></span></p>
-       
-      </section>
-
-      <!-- Compare Section -->
-      <section id="compare" class="section">
-        <h2>Compare Machine CO₂ Emission</h2>
-        <form id="compareForm" class="card p-3 mb-3">
-          
-          <div class="row">
-            <div class="col-md-6 mb-2"><input type="text" name="name" class="form-control" placeholder="Machine Name" required /></div>
-            <div class="col-md-6 mb-2"><input type="number" name="co2PerUnit" class="form-control" placeholder="CO₂ per Unit" /></div>
-            <div class="col-md-6 mb-2"><input type="number" name="co2PerHour" class="form-control" placeholder="CO₂ per Hour" /></div>
-            <div class="col-md-6 mb-2"><input type="number" name="productionPerHour" class="form-control" placeholder="Production per Hour" /></div>
-            <div class="col-md-6 mb-2"><input type="number" name="machineAge" class="form-control" placeholder="Machine Age" /></div>
-            <div class="col-md-6 mb-2"><input type="number" name="machineAgeLimit" class="form-control" placeholder="Machine Age Limit" /></div>
-           <div class="col-md-6 mb-2">
-  <input type="text" name="company" class="form-control" placeholder="Company Name" />
-</div>
-<div class="col-md-6 mb-2">
-  <input type="text" name="category" class="form-control" placeholder="Machine Category" />
-</div>
-<div class="col-md-6 mb-2">
-  <input type="text" name="machineArea" class="form-control" placeholder="Machine Area (e.g. 200 sqft)" />
-</div>
-<div class="col-md-6 mb-2">
-  <input type="text" name="companyLocation" class="form-control" placeholder="Company Location" />
-</div>
-<div class="col-md-6 mb-2">
-  <input type="text" name="surroundingFactors" class="form-control" placeholder="Surrounding Factors" />
-</div>
-<div class="col-md-6 mb-2">
-  <input type="text" name="machinePurpose" class="form-control" placeholder="Machine Purpose" />
-</div>
-<div class="col-md-6 mb-2">
-  <input type="text" name="lastServiced" class="form-control" placeholder="Enter last serviced date" />
-</div>
-            <div class="col-md-6 mb-2">
-             
-              <select name="fuelType" class="form-select">
-                <option value="">Fuel Type</option>
-                <option value="diesel">Diesel</option>
-                <option value="petrol">Petrol</option>
-                <option value="electric">Electric</option>
-                <option value="solar">Solar</option>
-                <option value="gas">Gas</option>
-                
-              </select>
-            </div>
-            <div class="col-md-6 mb-2">
-              <select name="workingEnvironment" class="form-select">
-                <option value="">Working Environment</option>
-                <option value="dusty">Dusty</option>
-                <option value="humid">Humid</option>
-                <option value="clean">Clean</option>
-                <option value="standard">Standard</option>
-              </select>
-            </div>
-            <div class="col-md-6 mb-2"><input type="date" name="lastServiced" class="form-control" placeholder="Last Serviced Date" /></div>
-          </div>
-          <button type="submit" class="btn btn-primary mt-3">Compare</button>
-          
-        </form>
-
-        <div id="yourCO2Box" class="mb-3"></div>
-
-        <div id="resultPanel">
-          <h3>Comparison Results</h3>
-         <table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Machine Name</th>
-      <th>Machine CO₂</th>
-      <th>Your CO₂</th>
-      <th>Difference</th>
-      <th>Action</th> <!-- ✅ Add this -->
-    </tr>
-  </thead>
-  <tbody id="resultsTableBody"></tbody>
-</table>
-        </div>
-      </section>
-
-      <!-- Machine List Section -->
-      <section id="list" class="section">
-  <h2>All Machines</h2>
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered">
-    <thead>
-  <tr>
-    <th>Name</th>
-    <th>Company</th>
-    <th>Category</th>
-    <th>Fuel</th>
-    <th>CO₂/hr</th>
-    <th>Prod/hr</th>
-    <th>CO₂ per unit</th>
-    <th>Action</th> <!-- ✅ Add this -->
-  </tr>
-</thead>
-      <tbody id="machinesTbody"></tbody>
-    </table>
-  </div>
-</section>
-<section id="results" class="section active">
-  <h2>Comparison Results</h2>
-  <div class="table-responsive">
-    <table class="table table-striped table-bordered">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Machine CO₂/hr</th>
-          <th>Input CO₂/hr</th>
-          <th>Difference</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="resultsTableBody"></tbody> <!-- ✅ This is what your JS is targeting -->
-    </table>
-  </div>
-</section>
-
-    </main>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Login</button>
+      </div>
+    </form>
+    <div id="error-message" class="alert alert-danger mt-3 d-none"></div>
   </div>
 
   <script>
-    
-    const role = localStorage.getItem("role");
-if (!role) window.location.href = "/login.html";
-if (location.pathname.includes("admin") && role !== "admin") {
-  alert("Access denied");
-  window.location.href = "/login.html";
-}
-   async function loadOverview() {
-  try {
-    const res = await fetch("http://localhost:5000/api/machines");
-    const machines = await res.json();
-
-    // ✅ Update cards
-    document.getElementById("totalMachines").textContent = machines.length;
-
-    const avgCO2 = machines.reduce((sum, m) => sum + (m.estimatedCO2 || 0), 0) / machines.length;
-    document.getElementById("averageCO2").textContent = avgCO2.toFixed(2) + " kg/hr";
-
-    const best = machines.reduce((best, m) => {
-      const co2 = m.estimatedCO2 / (m.productionPerHour || 1);
-      return co2 < best.co2 ? { name: m.name, co2 } : best;
-    }
-    , { name: "–", co2: Infinity });
-
-    document.getElementById("bestMachine").textContent = `${best.name} (${best.co2.toFixed(2)} CO₂/unit)`;
-
-    // ✅ Prepare chart data
-    const labels = machines.map(m => m.name);
-    const data = machines.map(m => m.estimatedCO2?.toFixed(2) || 0);
-
-    // ✅ Destroy old chart if it exists
-    if (window.co2ChartInstance) {
-      window.co2ChartInstance.destroy();
-    }
-
-    // ✅ Create new chart
-    const ctx = document.getElementById("co2Chart").getContext("2d");
-    window.co2ChartInstance = new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels,
-        datasets: [{
-          label: "CO₂ Emissions (kg/hr)",
-          data,
-          backgroundColor: "rgba(13, 110, 253, 0.6)",
-          borderColor: "rgba(13, 110, 253, 1)",
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            title: {
-              display: true,
-              text: "CO₂ (kg/hr)"
-            }
-          },
-          x: {
-            title: {
-              display: true,
-              text: "Machine Name"
-            }
-          }
-        }
-      }
-    });
-    document.getElementById("lastUpdated").textContent = new Date().toLocaleString();
-
-  } catch (err) {
-    console.error("❌ Failed to load overview:", err);
-  }
-}
-
-    function getPerformanceIcon(diff) {
-  if (diff < 0) return "🌿";       // Your machine is cleaner
-  if (diff < 20) return "⚖️";     // Comparable
-  return "🔥";                    // Worse
-}
-    function showToast(message, type = "info") {
-  const toastContainer = document.getElementById("toastContainer");
-  const toast = document.createElement("div");
-  toast.className = `toast align-items-center text-bg-${type} border-0 show`;
-  toast.role = "alert";
-  toast.innerHTML = `
-    <div class="d-flex">
-      <div class="toast-body">${message}</div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-    </div>  
-  `;
-  toastContainer.appendChild(toast);
-  setTimeout(() => toast.remove(), 4000);
-}
-    // Navigation
-    const links = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.section');
-    links.forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        links.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        const target = link.getAttribute('href').substring(1);
-        sections.forEach(s => s.classList.remove('active'));
-        document.getElementById(target).classList.add('active');
-      });
-    });
-
-    // Compare Form Logic
-    const form = document.getElementById("compareForm");
-    const tbody = document.getElementById("resultsTableBody");
-    const yourCO2Box = document.getElementById("yourCO2Box");
-    let currentInputData = null;
-    let currentEstimatedCO2 = null;
-
-  // ✅ Define refreshComparison separately
-async function refreshComparison() {
-  if (!currentInputData) return;
-
-  try {
-    const res = await fetch("http://localhost:5000/api/machines/compare", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(currentInputData)
-    });
-
-    const result = await res.json();
-    currentEstimatedCO2 = result.inputCO2;
-
-    tbody.innerHTML = "";
-   result.comparisons.forEach(comp => {
-  const row = document.createElement("tr");
-
-  // Color coding based on difference
-  let rowClass = "";
-  if (comp.difference < 0) {
-    rowClass = "table-success"; // Your machine is better
-  } else if (comp.difference < 20) {
-    rowClass = "table-warning"; // Slightly worse
-  } else {
-    rowClass = "table-danger"; // Much worse
-  }
-  row.className = rowClass;
-
-  row.innerHTML = `
-    <td>${comp.name}</td>
-    <td>${comp.machineCO2 ?? "N/A"}</td>
-    <td>${comp.inputCO2 ?? "N/A"}</td>
-    <td>${comp.difference ?? "N/A"} ${getPerformanceIcon(comp.difference)}</td>
-    <td>
-      ${comp._id ? `<button class="btn btn-sm btn-danger" onclick="deleteMachine('${comp._id}')">🗑️ Delete</button>` : ''}
-    </td>
-  `;
-  tbody.appendChild(row);
-});
-  } catch (err) {
-    console.error("❌ Failed to refresh comparison:", err);
-  }
-}
-
-// ✅ Then define loadMachines separately
-async function loadMachines() {
-  try {
-    const res = await fetch("http://localhost:5000/api/machines");
-    const machines = await res.json();
-    console.log("Fetched machines:", machines);
-
-    const machinesTbody = document.getElementById("machinesTbody");
-    machinesTbody.innerHTML = machines.map(m => {
-      const co2PerUnit = m.productionPerHour
-        ? (m.estimatedCO2 / m.productionPerHour).toFixed(2)
-        : '–';
-      return `
-        <tr>
-          <td>${m.name}</td>
-          <td>${m.company || '–'}</td>
-          <td>${m.category || '–'}</td>
-          <td>${m.fuelType || '–'}</td>
-          <td>${m.estimatedCO2?.toFixed(2) || '–'}</td>
-          <td>${m.productionPerHour || '–'}</td>
-          <td>${co2PerUnit}</td>
-          <td> 
-            <button class="btn btn-sm btn-danger" onclick="deleteMachine('${m._id}')">🗑️ Delete</button>
-          </td>
-        </tr>
-      `;
-    }).join('');
-  } catch (err) {
-    
-  }
-
-  try {
-   
-console.log("Fetched machines:", machines);
-
-  const machinesTbody = document.getElementById("machinesTbody");
-machinesTbody.innerHTML = machines.map(m => {
-  const co2PerUnit = m.productionPerHour
-    ? (m.estimatedCO2 / m.productionPerHour).toFixed(2)
-    : '–';
-  return `
-    <tr>
-      <td>${m.name}</td>
-      <td>${m.company || '–'}</td>
-      <td>${m.category || '–'}</td>
-      <td>${m.fuelType || '–'}</td>
-      <td>${m.estimatedCO2?.toFixed(2) || '–'}</td>
-      <td>${m.productionPerHour || '–'}</td>
-      <td>${co2PerUnit}</td>
-      <td>
-        <button class="btn btn-sm btn-danger" onclick="deleteMachine('${m._id}')">🗑️ Delete</button>
-      </td>
-    </tr>
-  `;
-}).join(''); 
-  } catch (err) {
-   
-   
-  }
-}
-window.addEventListener('hashchange', () => {
-  const target = location.hash.substring(1);
-  sections.forEach(s => s.classList.remove('active'));
-  document.getElementById(target)?.classList.add('active');
-
-  if (target === 'list') {
-    loadMachines();
-    console.log("Loading machines...");
-    
-  }
-});
-async function deleteMachine(id) {
-  if (!confirm("Are you sure you want to delete this machine?")) return;
-
-  try {
-    const res = await fetch(`http://localhost:5000/api/machines/${id}`, {
-      method: "DELETE"
-    });
-
-    if (!res.ok) throw new Error("Failed to delete");
-
-    showToast("🗑️ Machine deleted successfully!", "warning");
-
-    // ✅ Refresh Machine List instantly
-    loadMachines();
-
-    // ✅ Refresh Comparison Table if input exists
-    refreshComparison();
-
-    // ✅ Refresh Overview stats and chart
-    loadOverview();
-
-  } catch (err) {
-    console.error("❌ Delete error:", err);
-  }
-}
-
-    form.addEventListener("submit", async (e) => {
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData);
-      currentInputData = data;
-     
 
+      const formData = new FormData(e.target);
+      const data = {
+        username: formData.get("username"),
+        password: formData.get("password"),
+        role: formData.get("role")
+      };
 
+      const errorMessageDiv = document.getElementById("error-message");
+      errorMessageDiv.classList.add("d-none");
 
       try {
-        const res = await fetch("http://localhost:5000/api/machines/compare", {
+        const res = await fetch("http://localhost:5000/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
         });
-        
+
         const result = await res.json();
-        console.log("Comparison results:", result.comparisons);
 
-        currentEstimatedCO2 = result.inputCO2;
-        
-        yourCO2Box.innerHTML = `
-          <div class="alert alert-success">
-            <strong>Your Machine Estimated CO₂:</strong> ${result.inputCO2} kg/hr
-            <button id="saveBtn" class="btn btn-sm btn-outline-success ms-3">➕ Save This Machine</button>
-          </div>
-        `;
-       
-
-setTimeout(() => {
-  const saveBtn = document.getElementById("saveBtn");
-  if (!saveBtn) return console.warn("Save button not found");
-
-  saveBtn.addEventListener("click", async () => {
-    try {
-      const savedRes = await fetch("http://localhost:5000/api/machines", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...currentInputData, estimatedCO2: currentEstimatedCO2 })
-      });
-
-      if (!savedRes.ok) {
-        const errorText = await savedRes.text();
-        throw new Error(`Server error: ${savedRes.status} - ${errorText}`);
-      }
-
-      const savedJson = await savedRes.json();
-     showToast("✅ Machine saved successfully!", "success");
-
-     loadMachines(); // ✅ Always refresh the list
-    loadOverview();  //✅ Refresh overview after saving
-
-    } catch (err) {
-      console.error("❌ Save error:", err);
-     
-    }
-  });
-}, 100); // Delay to ensure button is in DOM
-
-        tbody.innerHTML = "";
-result.comparisons.forEach(comp => {
-  const row = document.createElement("tr");
-
-  // ✅ Add row color based on difference
-  let rowClass = "";
-  if (comp.difference < 0) {
-    rowClass = "table-success"; // Your machine is better
-  } else if (comp.difference < 20) {
-    rowClass = "table-warning"; // Slightly worse
-  } else {
-    rowClass = "table-danger"; // Much worse
-  }
-  row.className = rowClass;
-
-  row.innerHTML = `
-    <td>${comp.name}</td>
-    <td>${comp.machineCO2 ?? "N/A"}</td>
-    <td>${comp.inputCO2 ?? "N/A"}</td>
-    <td>${comp.difference ?? "N/A"} ${getPerformanceIcon(comp.difference)}</td>
-    <td>
-      ${comp._id ? `<button class="btn btn-sm btn-danger" onclick="deleteMachine('${comp._id}')">🗑️ Delete</button>` : ''}
-    </td>
-  `;
-  tbody.appendChild(row);
-});
-
+        if (res.ok) {
+          localStorage.setItem("role", result.role);
+          window.location.href = result.role === "admin" ? "/admin-dashboard.html" : "/index.html";
+        } else {
+          const errorText = typeof result === "string" ? result : result.message || "Login failed";
+          errorMessageDiv.textContent = errorText;
+          errorMessageDiv.classList.remove("d-none");
+          console.log("Login failed with:", errorText);
+        }
       } catch (err) {
-       
-        console.error(err);
+        console.error("❌ Login error:", err);
+        errorMessageDiv.textContent = "Login failed. Check console for details.";
+        errorMessageDiv.classList.remove("d-none");
       }
     });
-    function logout() {
-  localStorage.removeItem("role");
-  window.location.href = "/login.html";
-}
-   window.addEventListener("DOMContentLoaded", () => {
-  if (location.hash === '#list') {
-    document.getElementById("list").classList.add("active");
-    loadMachines();
-  }
-  loadOverview();  // ✅ Load overview data when page opens
-
-});
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
-
