@@ -9,7 +9,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Middleware                           
 app.use(cors());
 app.use(express.json());
 
@@ -54,5 +54,5 @@ app.post("/api/login", async (req, res) => {
 // ... (rest of the code)
 // ✅ Start server
 app.listen(PORT, () => {
-  console.log(`Server started on http://https://blue-carbon-k8cl.onrender.com:${PORT}`);
+  console.log(`Server started on http://localhost:${PORT}`);
 });
