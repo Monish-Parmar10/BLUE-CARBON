@@ -3,6 +3,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const connectDB = require("./db");
 const User = require("./models/User");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -15,7 +16,7 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 const machineRoutes = require("./routes/machineRoutes");
