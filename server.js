@@ -14,7 +14,15 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Middleware
-app.use(cors());
+// Middleware
+app.use(cors({
+  origin: "https://monish-parmar10.github.io",  // allow your GitHub Pages site
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
