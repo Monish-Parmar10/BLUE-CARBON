@@ -230,7 +230,7 @@ if (location.pathname.includes("admin") && role !== "admin") {
 
    async function loadOverview() {
   try {
-    const res = await fetch("http://localhost:5000/api/machines");
+    const res = await fetch("https://blue-carbon-k8cl.onrender.com/api/machines");
     const machines = await res.json();
 
     // ✅ Update cards
@@ -341,7 +341,7 @@ async function refreshComparison() {
   if (!currentInputData) return;
 
   try {
-    const res = await fetch("http://localhost:5000/api/machines/compare", {
+    const res = await fetch("https://blue-carbon-k8cl.onrender.com/api/machines/compare", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currentInputData)
@@ -384,7 +384,7 @@ async function refreshComparison() {
 // ✅ Then define loadMachines separately
 async function loadMachines() {
   try {
-    const res = await fetch("http://localhost:5000/api/machines");
+    const res = await fetch("https://blue-carbon-k8cl.onrender.com/api/machines");
     const machines = await res.json();
     console.log("Fetched machines:", machines);
 
@@ -456,7 +456,7 @@ async function deleteMachine(id) {
   if (!confirm("Are you sure you want to delete this machine?")) return;
 
   try {
-    const res = await fetch(`http://localhost:5000/api/machines/${id}`, {
+    const res = await fetch(`https://blue-carbon-k8cl.onrender.com/api/machines/${id}`, {
       method: "DELETE"
     });
 
@@ -488,7 +488,7 @@ async function deleteMachine(id) {
 
 
       try {
-        const res = await fetch("http://localhost:5000/api/machines/compare", {
+        const res = await fetch("https://blue-carbon-k8cl.onrender.com/api/machines/compare", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
@@ -513,7 +513,7 @@ setTimeout(() => {
 
   saveBtn.addEventListener("click", async () => {
     try {
-      const savedRes = await fetch("http://localhost:5000/api/machines", {
+      const savedRes = await fetch("https://blue-carbon-k8cl.onrender.com/api/machines", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...currentInputData, estimatedCO2: currentEstimatedCO2 })

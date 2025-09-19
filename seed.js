@@ -2,7 +2,7 @@ const User = require("./models/User");
 const mongoose = require("mongoose");
 const Machine = require("./models/Machine");
 
-mongoose.connect("mongodb://localhost:27017/machineDB", {
+mongoose.connect("process.env.MONGO_URL/machineDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 });
