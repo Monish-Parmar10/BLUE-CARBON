@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Injection Molder 3000",
+    "company": "PlastoTech",
+    "category": "Plastic",
+    "co2PerUnit": 8.2,
+    "machineAge": 5,
+    "machineAgeLimit": 12,
+    "workingEnvironment": "dusty",
+    "fuelType": "diesel",
+    "lastServiced": "2024-09-15"
+  }
+]
