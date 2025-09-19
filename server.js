@@ -54,5 +54,5 @@ app.post("/api/login", async (req, res) => {
 // ... (rest of the code)
 // ✅ Start server
 app.listen(PORT, () => {
-  console.log(`Server started on http://localhost:${PORT}`);
+  console.log(`Server started on http://https://blue-carbon-k8cl.onrender.com:${PORT}`);
 });
