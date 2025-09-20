@@ -1,11 +1,9 @@
 const User = require("./models/User");
 const mongoose = require("mongoose");
 const Machine = require("./models/Machine");
+const dotenv = require("dotenv");
 
-await mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+dotenv.config();
 
 // 👇 Same CO2 estimation logic from your controller
 const estimateCO2 = (data) => {
@@ -83,11 +81,11 @@ const machines = [
 ];
 
 const users = [
- {
-  username: "admin",
-  password: "admin123", 
-  role: "admin" 
-},
+  {
+    username: "admin",
+    password: "admin123",
+    role: "admin"
+  },
   {
     username: "customer1",
     password: "cust123",
@@ -97,6 +95,12 @@ const users = [
 
 async function seed() {
   try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("Database connection successful.");
+
     await Machine.deleteMany();
     const withCO2 = machines.map(machine => ({
       ...machine,
@@ -105,17 +109,19 @@ async function seed() {
     await Machine.insertMany(withCO2);
     console.log("✅ Machines inserted with estimatedCO2!");
 
-   await User.deleteMany();
+    await User.deleteMany();
 
-for (const userData of users) {
-  const user = new User(userData);
-  await user.save(); // ✅ triggers password hashing
-}
-    
+    for (const userData of users) {
+      const user = new User(userData);
+      await user.save(); // ✅ triggers password hashing
+    }
+
     console.log("✅ Users seeded successfully!");
 
     mongoose.disconnect();
   } catch (err) {
     console.error("❌ Failed to seed data", err);
   }
-}seed();
+}
+
+seed();
