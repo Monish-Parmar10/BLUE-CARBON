@@ -54,7 +54,7 @@ p {
     </nav>
 
     <main class="flex-grow-1 p-4">
-        <div class="text-end mb-3">
+      <div class="text-end mb-3">
   <button onclick="logout()" class="btn btn-outline-light">Logout</button>
 </div>
       <!-- Toast Container -->
@@ -93,6 +93,7 @@ p {
     </div>
   </div>
 </div>
+
         <h2>Machine Overview</h2>
         <p>Track, evaluate, and improve the carbon efficiency of your industrial machinery.</p>
        <p class="text-muted small">Last updated: <span id="lastUpdated"></span></p>
@@ -221,13 +222,13 @@ p {
   </div>
 
   <script>
-const role = localStorage.getItem("role");
+    
+    const role = localStorage.getItem("role");
 if (!role) window.location.href = "/login.html";
 if (location.pathname.includes("admin") && role !== "admin") {
   alert("Access denied");
   window.location.href = "/login.html";
 }
-
    async function loadOverview() {
   try {
     const res = await fetch("https://blue-carbon-k8cl.onrender.com/api/machines");
@@ -573,7 +574,6 @@ result.comparisons.forEach(comp => {
   localStorage.removeItem("role");
   window.location.href = "/login.html";
 }
-
    window.addEventListener("DOMContentLoaded", () => {
   if (location.hash === '#list') {
     document.getElementById("list").classList.add("active");
