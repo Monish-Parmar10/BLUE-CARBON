@@ -222,10 +222,10 @@ p {
 
   <script>
 const role = localStorage.getItem("role");
-if (!role) window.location.href = "/login.html";
+if (!role) window.location.href = "/BLUE-CARBON/login.html";
 if (location.pathname.includes("admin") && role !== "admin") {
   alert("Access denied");
-  window.location.href = "/login.html";
+  window.location.href ="/BLUE-CARBON/login.html";
 }
 
    async function loadOverview() {
@@ -571,7 +571,7 @@ result.comparisons.forEach(comp => {
     });
     function logout() {
   localStorage.removeItem("role");
-  window.location.href = "/login.html";
+  window.location.href = "/BLUE-CARBON/login.html";
 }
 
    window.addEventListener("DOMContentLoaded", () => {

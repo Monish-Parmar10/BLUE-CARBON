@@ -80,7 +80,7 @@
 
         if (res.ok) {
           localStorage.setItem("role", result.role);
-          window.location.href = result.role === "admin" ? "/admin-dashboard.html" : "/index.html";
+          window.location.href = result.role === "admin" ? "/BLUE-CARBON/admin-dashboard.html" : "/BLUE-CARBON/index.html";
         } else {
           const errorText = typeof result === "string" ? result : result.message || "Login failed";
           errorMessageDiv.textContent = errorText;
